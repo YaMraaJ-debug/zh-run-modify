@@ -21,5 +21,5 @@
 
 ## Deploy using CLI
 
-- Deployment instructions uploaded [HERE](https://gist.github.com/Dawn-India/9be1ca66b392dee82bcbc8d7f7ebefe8)
+- Deployment instructions uploaded [HERE](https://graph.org/Install-CLI-using-official-docs-httpsdevcenterherokucomarticlesheroku-cli-07-31)
 - Carefully copy-paste every CMD one by one. If you miss maybe your BOT will not run.
