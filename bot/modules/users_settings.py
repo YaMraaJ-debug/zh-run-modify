@@ -95,6 +95,14 @@ async def get_user_settings(from_user):
     else:
         lremname = 'None'
 
+    buttons.ibutton("Mirror Remname", f"userset {user_id} mremname")
+    if user_dict.get('mremname', False):
+        mremname = user_dict['mremname']
+    elif 'mremname' not in user_dict and (MFR := config_dict['MIRROR_FILENAME_REMNAME']):
+        mremname = MFR
+    else:
+        mremname = 'None'
+      
     if user_dict:
         buttons.ibutton("Reset Setting", f"userset {user_id} reset_all")
 
@@ -117,7 +125,8 @@ async def get_user_settings(from_user):
 <code>Rclone Config    :</code> <b>{rccmsg}</b>
 
 <code>User Dump        :</code> <b>{user_dump}</b>
-<code>Remove Unwanted  :</code> <b>{lremname}</b>
+<code>Leech Remove Unwanted  :</code> <b>{lremname}</b>
+<code>Mirror File Rename  :</code> <b>{mremname}</b>
 """
     return text, buttons.build_menu(1)
 
@@ -225,6 +234,16 @@ async def set_remname(_, message, pre_event):
     handler_dict[user_id] = False
     value = message.text
     update_user_ldata(user_id, 'lremname', value)
+    await message.delete()
+    await update_user_settings(pre_event)
+    if DATABASE_URL:
+        await DbManger().update_user_data(user_id)
+
+async def set_remname(_, message, pre_event):
+    user_id = message.from_user.id
+    handler_dict[user_id] = False
+    value = message.text
+    update_user_ldata(user_id, 'mremname', value)
     await message.delete()
     await update_user_settings(pre_event)
     if DATABASE_URL:
@@ -397,11 +416,10 @@ Send Leech Prefix. Timeout: 60 sec
 Examples:
 1. <code>{escape('<b>Join: @Z_Mirror</b>')}</code> 
 This will give output as:
-<b>Join: @Z_Mirror</b>  <code>69MB.bin</code>.
-
-2. <code>{escape('<code>Join: @Z_Mirror</code>')}</code> 
+<b>Join: @TomenMain</b>
+2. <code>{escape('<code>Join: @TomenMain</code>')}</code> 
 This will give output as:
-<code>Join: @Z_Mirror</code> <code>69MB.bin</code>.
+<code>Join: @TomenMain</code> <code>69MB.bin</code>.
 
 Check all available formatting options <a href="https://core.telegram.org/bots/api#formatting-options">HERE</a>.
         '''
@@ -457,6 +475,33 @@ Timeout: 60 sec
         await editMessage(message, rmsg, buttons.build_menu(1))
         pfunc = partial(set_remname, pre_event=query)
         await event_handler(client, query, pfunc)
+
+
+    elif data[2] == 'mremname':
+        await query.answer()
+        buttons = ButtonMaker()
+        if user_dict.get('mremname', False) or config_dict['MIRROR_FILENAME_REMNAME']:
+            buttons.ibutton("MIRROR FILENAME REMNAME",f"userset {user_id} rmremname")
+        buttons.ibutton("Back", f"userset {user_id} back")
+        buttons.ibutton("Close", f"userset {user_id} close")
+        rmsg = f'''
+<b>Send mirror file rename </b>
+
+Examples: <code>mltb|jmdkh|wzml</code>
+This will remove if any of those words found in filename.
+
+Timeout: 60 sec
+'''
+        await editMessage(message, rmsg, buttons.build_menu(1))
+        pfunc = partial(set_remname, pre_event=query)
+        await event_handler(client, query, pfunc)
+    elif data[2] == 'rmremname':
+        handler_dict[user_id] = False
+        await query.answer()
+        update_user_ldata(user_id, 'mremname', '')
+        await update_user_settings(query)
+        if DATABASE_URL:
+            await DbManger().update_user_data(user_id)
     elif data[2] == 'rlremname':
         handler_dict[user_id] = False
         await query.answer()
