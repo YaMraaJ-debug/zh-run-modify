@@ -205,7 +205,7 @@ async def start(_, message):
     elif await CustomFilters.authorized(_, message):
         start_string = f'''This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers. /{BotCommands.HelpCommand}
         '''
-        await sendMessage(message, start_string)
+        await sendMessage(reply_markup, start_string)
     elif config_dict['DM_MODE']:
         await sendMessage(message, 'Now, This bot will send all your files and links here. Start Using ...', reply_markup)
     else:
