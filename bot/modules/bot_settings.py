@@ -386,6 +386,10 @@ async def load_config():
     if len(START_BTN2_NAME) == 0 or len(START_BTN2_URL) == 0:
         START_BTN2_NAME = 'Support Group'
         START_BTN2_URL = 'https://t.me/WeebZone_updates'
+      
+    MIRROR_FILENAME_REMNAME = environ.get('MIRROR_FILENAME_REMNAME', '')
+    if len(MIRROR_FILENAME_REMNAME) == 0:
+        MIRROR_FILENAME_REMNAME = ''
 
     list_drives_dict.clear()
     categories_dict.clear()
@@ -534,6 +538,7 @@ async def load_config():
                         'START_BTN1_URL': START_BTN1_URL,
                         'START_BTN2_NAME': START_BTN2_NAME,
                         'START_BTN2_URL': START_BTN2_URL,
+                        'MIRROR_FILENAME_REMNAME': MIRROR_FILENAME_REMNAME,
                         'YT_DLP_OPTIONS': YT_DLP_OPTIONS})
 
     if DATABASE_URL:
