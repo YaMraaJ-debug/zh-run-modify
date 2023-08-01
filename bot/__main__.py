@@ -185,8 +185,8 @@ async def send_close_signal(_, query):
 
 async def start(_, message):
     buttons = ButtonMaker()
-    buttons.buildbutton(f"{config_dict['START_BTN1_NAME']}", f"{config_dict['START_BTN1_URL']}")
-    buttons.buildbutton(f"{config_dict['START_BTN2_NAME']}", f"{config_dict['START_BTN2_URL']}")
+    buttons.ibutton(f"{config_dict['START_BTN1_NAME']}", f"{config_dict['START_BTN1_URL']}")
+    buttons.ibutton(f"{config_dict['START_BTN2_NAME']}", f"{config_dict['START_BTN2_URL']}")
     reply_markup = buttons.build_menu(2)
     if len(message.command) > 1:
         userid = message.from_user.id
