@@ -184,6 +184,10 @@ async def send_close_signal(_, query):
 
 
 async def start(_, message):
+    buttons = ButtonMaker()
+    buttons.buildbutton(f"{config_dict['START_BTN1_NAME']}", f"{config_dict['START_BTN1_URL']}")
+    buttons.buildbutton(f"{config_dict['START_BTN2_NAME']}", f"{config_dict['START_BTN2_URL']}")
+    reply_markup = buttons.build_menu(2)
     if len(message.command) > 1:
         userid = message.from_user.id
         input_token = message.command[1]
@@ -198,14 +202,13 @@ async def start(_, message):
         msg = 'Token refreshed successfully!\n\n'
         msg += f'Validity: {get_readable_time(int(config_dict["TOKEN_TIMEOUT"]))}'
         return await sendMessage(message, msg)
+    elif await CustomFilters.authorized(client, message):
+        start_string = 'This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers.', help_command=f"/{BotCommands.HelpCommand}"
+        await sendMessage(message, start_string, reply_markup)
     elif config_dict['DM_MODE']:
-        start_string = 'Bot Started.\n' \
-                       'Now I can send your stuff here.\n' \
-                       'Use me here: @Z_Mirror'
+        await sendMessage(message, 'Now, This bot will send all your files and links here. Start Using ...', reply_markup)
     else:
-        start_string = 'Sorry, you cant use me here!\n' \
-                       'Join @Z_Mirror to use me.\n' \
-                       'Thank You'
+        await sendMessage(message, 'You Are not authorized user! Deploy your own WZML-X Mirror-Leech bot', reply_markup)
     await sendMessage(message, start_string)
 
 
@@ -233,7 +236,10 @@ async def ping(_, message):
     await editMessage(reply, f'{ping_time} ms')
 
 async def log(_, message):
-    await sendFile(message, 'Z_Logs.txt')
+    buttons = ButtonMaker()
+    buttons.ibutton('📑 Log Display', f'wzmlx {message.from_user.id} logdisplay')
+    buttons.ibutton('📨 Web Paste', f'wzmlx {message.from_user.id} webpaste')
+    await sendFile(message, 'Z_Logs.txt', buttons=buttons.build_menu(1))
 
 help_string = f'''
 <b>NOTE: Click on any CMD to see more detalis.</b>
