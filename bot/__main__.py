@@ -202,7 +202,7 @@ async def start(_, message):
         msg = 'Token refreshed successfully!\n\n'
         msg += f'Validity: {get_readable_time(int(config_dict["TOKEN_TIMEOUT"]))}'
         return await sendMessage(message, msg)
-    elif await CustomFilters.authorized(client, message):
+    elif await CustomFilters.authorized(_, message):
         start_string = await sendMessage(message, start_string, reply_markup, 'This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers.', help_command=f"/{BotCommands.HelpCommand}")
     elif config_dict['DM_MODE']:
         await sendMessage(message, 'Now, This bot will send all your files and links here. Start Using ...', reply_markup)
