@@ -43,8 +43,9 @@ default_values = {'AUTO_DELETE_MESSAGE_DURATION': 120,
                   'RSS_DELAY': 900,
                   'STATUS_UPDATE_INTERVAL': 15,
                   'SEARCH_LIMIT': 0,
-                  'UPSTREAM_REPO': 'https://gitlab.com/Dawn-India/Z-Mirror',
-                  'UPSTREAM_BRANCH': 'zh_run'}
+                  'UPSTREAM_REPO': 'https://github.com/BalaPriyan/zh-run',
+                  'UPSTREAM_BRANCH': 'main'}
+
 
 
 async def load_config():
@@ -374,6 +375,18 @@ async def load_config():
     else:
         TOKEN_TIMEOUT = ''
 
+    START_BTN1_NAME = environ.get('START_BTN1_NAME', '')
+    START_BTN1_URL = environ.get('START_BTN1_URL', '')
+    if len(START_BTN1_NAME) == 0 or len(START_BTN1_URL) == 0:
+        START_BTN1_NAME = 'Master'
+        START_BTN1_URL = 'https://t.me/krn_adhikari'
+
+    START_BTN2_NAME = environ.get('START_BTN2_NAME', '')
+    START_BTN2_URL = environ.get('START_BTN2_URL', '')
+    if len(START_BTN2_NAME) == 0 or len(START_BTN2_URL) == 0:
+        START_BTN2_NAME = 'Support Group'
+        START_BTN2_URL = 'https://t.me/WeebZone_updates'
+
     list_drives_dict.clear()
     categories_dict.clear()
 
@@ -517,6 +530,10 @@ async def load_config():
                         'USE_SERVICE_ACCOUNTS': USE_SERVICE_ACCOUNTS,
                         'WEB_PINCODE': WEB_PINCODE,
                         'YTDLP_LIMIT': YTDLP_LIMIT,
+                        'START_BTN1_NAME': START_BTN1_NAME,
+                        'START_BTN1_URL': START_BTN1_URL,
+                        'START_BTN2_NAME': START_BTN2_NAME,
+                        'START_BTN2_URL': START_BTN2_URL,
                         'YT_DLP_OPTIONS': YT_DLP_OPTIONS})
 
     if DATABASE_URL:
