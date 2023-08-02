@@ -184,7 +184,7 @@ async def send_close_signal(_, query):
         LOGGER.error(e)
     await query.message.delete()
   
-async@new_task
+async @new_task
 async def start(client, message):
     buttons = ButtonMaker()
     buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
