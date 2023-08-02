@@ -401,17 +401,6 @@ USER_DUMP = '' if len(USER_DUMP) == 0 else USER_DUMP
 if USER_DUMP.isdigit() or USER_DUMP.startswith('-'):
     USER_DUMP = int(USER_DUMP)
 
-START_BTN1_NAME = environ.get('START_BTN1_NAME', '')
-START_BTN1_URL = environ.get('START_BTN1_URL', '')
-if len(START_BTN1_NAME) == 0 or len(START_BTN1_URL) == 0:
-    START_BTN1_NAME = 'Master'
-    START_BTN1_URL = 'https://t.me/KingOfFondness'
-
-START_BTN2_NAME = environ.get('START_BTN2_NAME', '')
-START_BTN2_URL = environ.get('START_BTN2_URL', '')
-if len(START_BTN2_NAME) == 0 or len(START_BTN2_URL) == 0:
-    START_BTN2_NAME = 'Support Group'
-    START_BTN2_URL = 'https://t.me/TomenUaS'
 
 MIRROR_FILENAME_REMNAME = environ.get('MIRROR_FILENAME_REMNAME', '')
 if len(MIRROR_FILENAME_REMNAME) == 0:
