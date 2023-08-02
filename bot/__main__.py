@@ -206,12 +206,13 @@ async def start(client, message):
         return await sendMessage(message, msg)
     elif await CustomFilters.authorized(client, message):
         start_string = BotTheme('ST_MSG', help_command=f"/{BotCommands.HelpCommand}")
-        await sendMessage(start_string, message, config_dict['IMAGE_URL'], reply_markup)
+        await sendPhoto(start_string, message, config_dict['IMAGE_URL'], reply_markup)
     elif config_dict['DM_MODE']:
         await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup=reply_markup, photo=config_dict['IMAGE_URL'])
     else:
         await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=config_dict['IMAGE_URL'])
     await DbManger().update_pm_users(message.from_user.id)
+
 
 
 async def restart(_, message):
