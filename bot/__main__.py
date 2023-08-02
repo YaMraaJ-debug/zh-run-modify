@@ -192,7 +192,7 @@ async def start(_, message):
         tpath = message.media.media
     if not ospath.exists(tpath):
         tpath = default_tpath
-    await message.edit_media(media=InputMediaPhoto(media=tpath, caption=message.caption), reply_markup=button)
+    await message.edit_media(media=InputMediaPhoto(media=tpath, caption=message.caption), reply_markup)
     buttons = ButtonMaker()
     buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
     buttons.ubutton(BotTheme('ST_BN2_NAME'), BotTheme('ST_BN2_URL'))
