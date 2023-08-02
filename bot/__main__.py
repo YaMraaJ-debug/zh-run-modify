@@ -4,7 +4,7 @@ from signal import SIGINT, signal
 from sys import executable
 from time import time, monotonic
 from uuid import uuid4
-
+import os
 from aiofiles import open as aiopen
 from aiofiles.os import path as aiopath
 from aiofiles.os import remove as aioremove
