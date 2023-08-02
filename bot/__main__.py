@@ -185,8 +185,10 @@ async def send_close_signal(_, query):
 
 
 async def start(_, message):
-    if not ospath.exists(tpath):
-        tpath = "https://graph.org/file/25545597de34c640b31d6.jpg"
+    default_tpath = "https://graph.org/file/25545597de34c640b31d6.jpg"
+    tpath = default_tpath
+    if message.media and isinstance(message.media, InputMediaPhoto):
+      tpath = message.media.media
     await query.message.edit_media(
         media=InputMediaPhoto(media=tpath, caption=msg), reply_markup=button)
     buttons = ButtonMaker()
