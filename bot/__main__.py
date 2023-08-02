@@ -184,7 +184,7 @@ async def send_close_signal(_, query):
         LOGGER.error(e)
     await query.message.delete()
   
-pic='https://graph.org/file/9fb513487284cd4b6952c.jpg'
+pic=config_dict["IMAGE_URL"]
 async def start(client, message):
     buttons = ButtonMaker()
     buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
