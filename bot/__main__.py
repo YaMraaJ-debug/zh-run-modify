@@ -207,7 +207,7 @@ async def start(client, message):
     image_url = config_dict['IMAGE_URL']    
     if await CustomFilters.authorized(client, message):
         start_string = BotTheme('ST_MSG', help_command=f"/{BotCommands.HelpCommand}")
-            await sendPhoto(start_string, message, image_url, reply_markup)
+        await sendPhoto(start_string, message, image_url, reply_markup)
     elif config_dict['DM_MODE']:
         await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup, photo=image_url)
     else:
