@@ -230,3 +230,6 @@ But you can always use <code>/{mir}</code> with arg `-s` to select files before 
 
 <b>Powered By <a href=https://t.me/KingOfFondness>Fondness</a></b>
 """
+
+
+default_desp = {'BOT_THEME': 'Change the theme of bot. For now theme availabe is minimal. You can make your own theme checkout this link https://t.ly/9rVXq'}
