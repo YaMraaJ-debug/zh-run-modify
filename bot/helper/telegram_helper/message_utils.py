@@ -410,3 +410,16 @@ async def request_limiter(message=None, query=None):
             await query.answer("Oops, Spam detected! I will mute you for 69 seconds.", show_alert=True)
         else:
             await sendMessage(message, "Oops, Spam detected! I will mute you for 69 seconds.")
+
+def sendPhoto(text, bot, message, photo, reply_markup=None):
+    try:
+        return bot.send_photo(chat_id=message.chat_id, photo=photo, reply_to_message_id=message.message_id,
+            caption=text, reply_markup=reply_markup, parse_mode='html')
+    except RetryAfter as r:
+        LOGGER.warning(str(r))
+        sleep(r.retry_after * 1.5)
+        return sendPhoto(text, bot, message, photo, reply_markup)
+    except Exception as e:
+        LOGGER.error(str(e))
+        return
+
