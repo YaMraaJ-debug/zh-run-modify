@@ -184,7 +184,7 @@ async def send_close_signal(_, query):
     await query.message.delete()
 
 
-async def start(_, message, query):
+async def start(_, message):
     default_tpath = "https://graph.org/file/25545597de34c640b31d6.jpg"
     tpath = default_tpath
     if message.media and isinstance(message.media, InputMediaPhoto):
