@@ -413,7 +413,7 @@ if len(BOT_THEME) == 0:
 
 IMAGE_URL = environ.get('IMAGE_URL', '')
 if len(IMAGE_URL) == 0:
-    IMAGE_URL = 'https://graph.org/Qtvs-leech-Bot-Arguments-08-02'
+    IMAGE_URL = 'https://graph.org/file/25545597de34c640b31d6.jpg'
 
 
 config_dict = {
