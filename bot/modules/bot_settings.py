@@ -43,6 +43,7 @@ default_values = {'AUTO_DELETE_MESSAGE_DURATION': 120,
                   'RSS_DELAY': 900,
                   'STATUS_UPDATE_INTERVAL': 15,
                   'SEARCH_LIMIT': 0,
+                  'BOT_THEME': 'minimal',
                   'UPSTREAM_REPO': 'https://github.com/BalaPriyan/zh-run',
                   'UPSTREAM_BRANCH': 'main'}
 
@@ -375,21 +376,14 @@ async def load_config():
     else:
         TOKEN_TIMEOUT = ''
 
-    START_BTN1_NAME = environ.get('START_BTN1_NAME', '')
-    START_BTN1_URL = environ.get('START_BTN1_URL', '')
-    if len(START_BTN1_NAME) == 0 or len(START_BTN1_URL) == 0:
-        START_BTN1_NAME = 'Master'
-        START_BTN1_URL = 'https://t.me/krn_adhikari'
-
-    START_BTN2_NAME = environ.get('START_BTN2_NAME', '')
-    START_BTN2_URL = environ.get('START_BTN2_URL', '')
-    if len(START_BTN2_NAME) == 0 or len(START_BTN2_URL) == 0:
-        START_BTN2_NAME = 'Support Group'
-        START_BTN2_URL = 'https://t.me/WeebZone_updates'
       
     MIRROR_FILENAME_REMNAME = environ.get('MIRROR_FILENAME_REMNAME', '')
     if len(MIRROR_FILENAME_REMNAME) == 0:
         MIRROR_FILENAME_REMNAME = ''
+
+    BOT_THEME = environ.get('BOT_THEME', '')
+    if len(BOT_THEME) == 0:
+        BOT_THEME = 'minimal'
 
     list_drives_dict.clear()
     categories_dict.clear()
@@ -534,10 +528,7 @@ async def load_config():
                         'USE_SERVICE_ACCOUNTS': USE_SERVICE_ACCOUNTS,
                         'WEB_PINCODE': WEB_PINCODE,
                         'YTDLP_LIMIT': YTDLP_LIMIT,
-                        'START_BTN1_NAME': START_BTN1_NAME,
-                        'START_BTN1_URL': START_BTN1_URL,
-                        'START_BTN2_NAME': START_BTN2_NAME,
-                        'START_BTN2_URL': START_BTN2_URL,
+                        'BOT_THEME': BOT_THEME,
                         'MIRROR_FILENAME_REMNAME': MIRROR_FILENAME_REMNAME,
                         'YT_DLP_OPTIONS': YT_DLP_OPTIONS})
 
