@@ -183,34 +183,39 @@ async def send_close_signal(_, query):
     except Exception as e:
         LOGGER.error(e)
     await query.message.delete()
-
-button = None
-async def start(_, message):
+  
+async@new_task
+async def start(client, message):
     buttons = ButtonMaker()
     buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
     buttons.ubutton(BotTheme('ST_BN2_NAME'), BotTheme('ST_BN2_URL'))
     reply_markup = buttons.build_menu(2)
-    if len(message.command) > 1:
+    if len(message.command) > 1 and message.command[1] == "wzmlx":
+        await deleteMessage(message)
+    elif len(message.command) > 1 and config_dict['TOKEN_TIMEOUT']:
         userid = message.from_user.id
-        input_token = message.command[1]
-        if userid not in user_data:
-            return await sendMessage(message, 'This token is not yours!\n\nKindly generate your own.')
-        data = user_data[userid]
+        encrypted_url = message.command[1]
+        input_token, pre_uid = (b64decode(encrypted_url.encode()).decode()).split('&&')
+        if int(pre_uid) != userid:
+            return await sendMessage(message, '<b>Temporary Token is not yours!</b>\n\n<i>Kindly generate your own.</i>')
+        data = user_data.get(userid, {})
         if 'token' not in data or data['token'] != input_token:
-            return await sendMessage(message, 'Token already used!\n\nKindly generate a new one.')
-        data['token'] = str(uuid4())
-        data['time'] = time()
-        user_data[userid].update(data)
-        msg = 'Token refreshed successfully!\n\n'
-        msg += f'Validity: {get_readable_time(int(config_dict["TOKEN_TIMEOUT"]))}'
-        return await sendMessage(message, msg)
-    elif await CustomFilters.authorized(_, message):
+            return await sendMessage(message, '<b>Temporary Token already used!</b>\n\n<i>Kindly generate a new one.</i>')
+        elif config_dict['LOGIN_PASS'] is not None and data['token'] == config_dict['LOGIN_PASS']:
+            return await sendMessage(message, '<b>Bot Already Logged In via Password</b>\n\n<i>No Need to Accept Temp Tokens.</i>')
+        buttons.ibutton('Activate Temporary Token', f'pass {input_token}', 'header')
+        reply_markup = buttons.build_menu(2)
+        msg = '<b><u>Generated Temporary Login Token!</u></b>\n\n'
+        msg += f'<b>Temp Token:</b> <code>{input_token}</code>\n\n'
+        msg += f'<b>Validity:</b> {get_readable_time(int(config_dict["TOKEN_TIMEOUT"]))}'
+        return await sendMessage(message, msg, reply_markup)
+    elif await CustomFilters.authorized(client, message):
         start_string = BotTheme('ST_MSG', help_command=f"/{BotCommands.HelpCommand}")
-        await sendMessage(message, start_string, reply_markup)
-    elif config_dict['DM_MODE']:
-        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup)
+        await sendMessage(message, start_string, reply_markup, photo='IMAGES')
+    elif config_dict['BOT_PM']:
+        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup, photo='IMAGES')
     else:
-        await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup)
+        await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo='IMAGES')
     await DbManger().update_pm_users(message.from_user.id)
 
 
