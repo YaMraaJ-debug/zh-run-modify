@@ -26,6 +26,7 @@ from .helper.ext_utils.fs_utils import clean_all, exit_clean_up, start_cleanup
 from .helper.telegram_helper.button_build import ButtonMaker
 from .helper.telegram_helper.bot_commands import BotCommands
 from .helper.telegram_helper.filters import CustomFilters
+from .helper.themes import BotTheme
 from .helper.telegram_helper.message_utils import (editMessage, sendFile,
                                                    sendMessage, auto_delete_message)
 from .modules import (anonymous, authorize, bot_settings, cancel_mirror,
@@ -185,8 +186,8 @@ async def send_close_signal(_, query):
 
 async def start(_, message):
     buttons = ButtonMaker()
-    buttons.ibutton(f"{config_dict['START_BTN1_NAME']}", f"{config_dict['START_BTN1_URL']}")
-    buttons.ibutton(f"{config_dict['START_BTN2_NAME']}", f"{config_dict['START_BTN2_URL']}")
+    buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
+    buttons.ubutton(BotTheme('ST_BN2_NAME'), BotTheme('ST_BN2_URL'))
     reply_markup = buttons.build_menu(2)
     if len(message.command) > 1:
         userid = message.from_user.id
@@ -203,14 +204,13 @@ async def start(_, message):
         msg += f'Validity: {get_readable_time(int(config_dict["TOKEN_TIMEOUT"]))}'
         return await sendMessage(message, msg)
     elif await CustomFilters.authorized(_, message):
-        start_string = f'''This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram or to ddl servers. /{BotCommands.HelpCommand}
-        '''
-        await sendMessage(reply_markup, start_string)
+        start_string = BotTheme('ST_MSG', help_command=f"/{BotCommands.HelpCommand}")
+        await sendMessage(message, start_string, reply_markup)
     elif config_dict['DM_MODE']:
-        await sendMessage(message, 'Now, This bot will send all your files and links here. Start Using ...', reply_markup)
+        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup)
     else:
-        await sendMessage(message, 'You Are not authorized user! Deploy your own WZML-X Mirror-Leech bot', reply_markup)
-    await sendMessage(message, start_string)
+        await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup)
+    await DbManger().update_pm_users(message.from_user.id)
 
 
 async def restart(_, message):
