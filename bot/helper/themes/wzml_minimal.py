@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-class WZMLStyle:
+class SKULL:
     # async def start(client, message) ---> __main__.py
     ST_BN1_NAME = 'Repo'
     ST_BN1_URL = 'https://www.github.com/weebzone/WZML-X'
