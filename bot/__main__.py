@@ -207,20 +207,11 @@ async def start(client, message):
     image_url = config_dict['IMAGE_URL']    
     if await CustomFilters.authorized(client, message):
         start_string = BotTheme('ST_MSG', help_command=f"/{BotCommands.HelpCommand}")
-        if image_url:
             await sendPhoto(start_string, message, image_url, reply_markup)
-        else:
-            await sendMessage(message, start_string, reply_markup)
     elif config_dict['DM_MODE']:
-        if image_url:
-            await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup, photo=image_url)
-        else:
-            await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup)
+        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup, photo=image_url)
     else:
-        if image_url:
-            await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=image_url)
-        else:
-             await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup)
+        await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=image_url)
     await DbManger().update_pm_users(message.from_user.id)
 
 async def restart(_, message):
