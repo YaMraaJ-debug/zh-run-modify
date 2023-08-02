@@ -204,13 +204,14 @@ async def start(client, message):
         msg = 'Token refreshed successfully!\n\n'
         msg += f'Validity: {get_readable_time(int(config_dict["TOKEN_TIMEOUT"]))}'
         return await sendMessage(message, msg)
+    pic='https://graph.org/file/9fb513487284cd4b6952c.jpg'
     elif await CustomFilters.authorized(client, message):
         start_string = BotTheme('ST_MSG', help_command=f"/{BotCommands.HelpCommand}")
-        await message.reply_photo(config_dict['IMAGE_URL'], caption=start_string, reply_markup=reply_markup)
+        await message.reply_photo(pic, caption=start_string, reply_markup=reply_markup)
     elif config_dict['DM_MODE']:
-        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup=reply_markup, photo=config_dict['IMAGE_URL'])
+        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup=reply_markup, photo=pic)
     else:
-        await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=config_dict['IMAGE_URL'])
+        await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=pic)
     await DbManger().update_pm_users(message.from_user.id)
 
 
