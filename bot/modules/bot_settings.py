@@ -666,6 +666,9 @@ async def edit_variable(_, message, pre_message, key):
         value = max(int(value), 5)
     elif key == 'LEECH_SPLIT_SIZE':
         value = min(int(value), MAX_SPLIT_SIZE)
+    elif key == 'BOT_THEME':
+        if not value.strip() in AVL_THEMES.keys():
+            value = 'minimal'
     elif key == 'BASE_URL_PORT':
         value = int(value)
         if config_dict['BASE_URL']:
