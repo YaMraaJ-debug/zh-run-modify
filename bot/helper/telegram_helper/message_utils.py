@@ -415,11 +415,11 @@ def sendPhoto(text, bot, message, photo, reply_markup=None):
     try:
         return bot.send_photo(chat_id=message.chat_id, photo=photo, reply_to_message_id=message.message_id,
             caption=text, reply_markup=reply_markup, parse_mode='html')
-    except RetryAfter as r:
-        LOGGER.warning(str(r))
+    except RPCError as e:
+        LOGGER.error(f"{e.NAME}: {e.MESSAGE}")
         sleep(r.retry_after * 1.5)
         return sendPhoto(text, bot, message, photo, reply_markup)
     except Exception as e:
-        LOGGER.error(str(e))
-        return
+        LOGGER.error(f'Exception while muting member {e}')
+
 
