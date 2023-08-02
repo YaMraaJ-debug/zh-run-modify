@@ -188,9 +188,10 @@ async def start(_, message):
     default_tpath = "https://graph.org/file/25545597de34c640b31d6.jpg"
     tpath = default_tpath
     if message.media and isinstance(message.media, InputMediaPhoto):
-      tpath = message.media.media
-    await query.message.edit_media(
-        media=InputMediaPhoto(media=tpath, caption=msg), reply_markup=button)
+        tpath = message.media.media
+    if not ospath.exists(tpath):
+        tpath = default_tpath
+    await message.edit_media(media=InputMediaPhoto(media=tpath, caption=message.caption), reply_markup=button)
     buttons = ButtonMaker()
     buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
     buttons.ubutton(BotTheme('ST_BN2_NAME'), BotTheme('ST_BN2_URL'))
