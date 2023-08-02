@@ -29,7 +29,7 @@ from .helper.telegram_helper.bot_commands import BotCommands
 from .helper.telegram_helper.filters import CustomFilters
 from .helper.themes import BotTheme
 from .helper.telegram_helper.message_utils import (editMessage, sendFile,
-                                                   sendMessage, auto_delete_message)
+                                                   sendMessage, auto_delete_message, sendPhoto)
 from .modules import (anonymous, authorize, bot_settings, cancel_mirror,
                       category_select, clone, eval, gd_count, gd_delete,
                       gd_list, leech_del, mirror_leech, rmdb, rss,
