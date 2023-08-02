@@ -1,5 +1,5 @@
 from asyncio import create_subprocess_exec, gather
-from os import execl as osexecl, path as ospath
+from os import execl as osexecl, path
 from signal import SIGINT, signal
 from sys import executable
 from time import time, monotonic
