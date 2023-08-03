@@ -405,6 +405,7 @@ BOT_THEME = environ.get('BOT_THEME', '')
 if len(BOT_THEME) == 0:
     BOT_THEME = 'minimal'
 
+
 IMAGE_URL = environ.get('IMAGE_URL', '')
 if len(IMAGE_URL) == 0:
     IMAGE_URL = 'https://graph.org/file/d454b953103d42d759f8d.jpg'
