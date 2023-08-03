@@ -22,12 +22,13 @@ async def sendMessage(message, text, buttons=None, photo=None):
     try:
         if photo:
             try:
-                if photo = 'IMAGE':
-                    photo = rchoice(config_dict['IMAGE']
-                 return await message.reply(text=text, quote=True, disable_web_page_preview=True, disable_notification=True, reply_markup=buttons)
+                if photo == 'IMAGES':
+                    photo = rchoice(config_dict['IMAGES'])
+                return await message.reply_photo(photo=photo, reply_to_message_id=message.id,
+                                                 caption=text, reply_markup=buttons, disable_notification=True)
             except IndexError:
                 pass
-            except (PhotInvilidDimensions, WebpageCurlFailed, MediaEmpty):
+            except (PhotoInvalidDimensions, WebpageCurlFailed, MediaEmpty):
                 des_dir = await download_image_url(photo)
                 await sendMessage(message, text, buttons, des_dir)
                 await aioremove(des_dir)
