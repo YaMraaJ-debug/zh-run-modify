@@ -7,6 +7,7 @@ from html import escape
 from re import match
 from time import time
 from uuid import uuid4
+from base64 import b64encode
 from psutil import cpu_percent, disk_usage, virtual_memory
 from pyrogram.types import BotCommand
 from pyrogram.handlers import CallbackQueryHandler
@@ -414,24 +415,25 @@ async def check_user_tasks(user_id, maxtask):
 
 
 def checking_access(user_id, button=None):
-    if not config_dict['TOKEN_TIMEOUT']:
+    if not config_dict['TOKEN_TIMEOUT'] or bool(user_id == OWNER_ID or user_id in user_data and user_data[user_id].get('is_sudo')):
         return None, button
     user_data.setdefault(user_id, {})
     data = user_data[user_id]
     expire = data.get('time')
-    isExpired = (expire is None or expire is not None and (
-        time() - expire) > config_dict['TOKEN_TIMEOUT'])
+    if config_dict['LOGIN_PASS'] is not None and data.get('token', '') == config_dict['LOGIN_PASS']:
+        return None, button
+    isExpired = (expire is None or expire is not None and (time() - expire) > config_dict['TOKEN_TIMEOUT'])
     if isExpired:
-        token = data['token'] if expire is None and 'token' in data else str(
-            uuid4())
+        token = data['token'] if expire is None and 'token' in data else str(uuid4())
         if expire is not None:
             del data['time']
         data['token'] = token
         user_data[user_id].update(data)
         if button is None:
             button = ButtonMaker()
-        button.ubutton('Get New Token', short_url(f'https://telegram.me/{bot_name}?start={token}'))
-        return 'Your <b>Token</b> is expired. Get a new one.', button
+        encrypt_url = b64encode(f"{token}&&{user_id}".encode()).decode()
+        button.ubutton('Generate New Token', short_url(f'https://t.me/{bot_name}?start={encrypt_url}'))
+        return f'<i>Temporary Token has been expired,</i> Kindly generate a New Temp Token to start using bot Again.\n<b>Validity :</b> <code>{get_readable_time(config_dict["TOKEN_TIMEOUT"])}</code>', button
     return None, button
 
 
