@@ -407,7 +407,7 @@ if len(BOT_THEME) == 0:
 
 IMAGE_URL = environ.get('IMAGE_URL', '')
 if len(IMAGE_URL) == 0:
-    IMAGE_URL = 'https://graph.org/file/9fb513487284cd4b6952c.jpg'
+    IMAGE_URL = 'https://graph.org/file/d454b953103d42d759f8d.jpg'
 
 config_dict = {
     "AS_DOCUMENT": AS_DOCUMENT,
