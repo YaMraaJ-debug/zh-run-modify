@@ -2,9 +2,13 @@ from asyncio import sleep
 from datetime import datetime, timedelta, timezone
 from time import time
 from re import match as re_match
+from traceback import format_exc
+from aiofiles.os import remove as aioremove
+from random import choice as rchoice
+
 
 from pyrogram.errors import (FloodWait, PeerIdInvalid, RPCError, UserNotParticipant)
-from pyrogram.types import ChatPermissions
+from pyrogram.types import ChatPermissions, InputMediaPhoto
 
 from bot import (LOGGER, Interval, bot, bot_name, cached_dict, categories_dict,
                  config_dict, download_dict_lock, status_reply_dict,
