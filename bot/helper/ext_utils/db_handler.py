@@ -140,6 +140,12 @@ class DbManger:
         await self.__db.users[bot_id].update_one({'_id': user_id}, {'$set': {key: doc_bin}}, upsert=True)
         self.__conn.close
 
+    async def get_pm_uids(self):
+        if self.__err:
+            return
+        return [doc['_id'] async for doc in self.__db.pm_users[bot_id].find({})]
+        self.__conn.close
+
     async def update_pm_users(self, user_id):
         if self.__err:
             return
