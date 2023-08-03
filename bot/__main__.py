@@ -183,7 +183,7 @@ async def send_close_signal(_, query):
         LOGGER.error(e)
     await query.message.delete()
 
-pic=config_dict["IMAGE_URL"]
+
 async def start(client, message):
     buttons = ButtonMaker()
     buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
@@ -205,11 +205,11 @@ async def start(client, message):
         return await sendMessage(message, msg)
     elif await CustomFilters.authorized(client, message):
         start_string = BotTheme('ST_MSG', help_command=f"/{BotCommands.HelpCommand}")
-        await message.reply_photo(pic, caption=start_string, reply_markup=reply_markup)
+        await message.reply_photo(BotTheme('PIC'), caption=start_string, reply_markup=reply_markup)
     elif config_dict['DM_MODE']:
-        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup=reply_markup, photo=pic)
+        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup=reply_markup, photo=BotTheme('PIC'))
     else:
-        await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=pic)
+        await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=BotTheme('PIC'))
     await DbManger().update_pm_users(message.from_user.id)
 
 
