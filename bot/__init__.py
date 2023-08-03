@@ -415,6 +415,12 @@ LOGIN_PASS = environ.get('LOGIN_PASS', '')
 if len(LOGIN_PASS) == 0:
     LOGIN_PASS = None
 
+IMAGES = environ.get('IMAGES', '')
+IMAGES = (IMAGES.replace("'", '').replace('"', '').replace(
+    '[', '').replace(']', '').replace(",", "")).split()
+if IMAGES:
+    STATUS_LIMIT = 2
+
 
 config_dict = {
     "AS_DOCUMENT": AS_DOCUMENT,
@@ -492,7 +498,8 @@ config_dict = {
     "TOKEN_TIMEOUT": TOKEN_TIMEOUT,
     "MIRROR_FILENAME_REMNAME": MIRROR_FILENAME_REMNAME,
     "BOT_THEME": BOT_THEME,
-    "LOGIN_PASS" : LOGIN_PASS
+    "LOGIN_PASS" : LOGIN_PASS,
+    "IMAGES": IMAGES,
 }
 
 config_dict = OrderedDict(sorted(config_dict.items()))
