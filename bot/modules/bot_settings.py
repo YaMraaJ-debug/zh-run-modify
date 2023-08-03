@@ -376,6 +376,10 @@ async def load_config():
     else:
         TOKEN_TIMEOUT = ''
 
+    LOGIN_PASS = environ.get('LOGIN_PASS', '')
+    if len(LOGIN_PASS) == 0:
+        LOGIN_PASS = None
+
       
     MIRROR_FILENAME_REMNAME = environ.get('MIRROR_FILENAME_REMNAME', '')
     if len(MIRROR_FILENAME_REMNAME) == 0:
@@ -530,6 +534,7 @@ async def load_config():
                         'YTDLP_LIMIT': YTDLP_LIMIT,
                         'BOT_THEME': BOT_THEME,
                         'MIRROR_FILENAME_REMNAME': MIRROR_FILENAME_REMNAME,
+                        'LOGIN_PASS': LOGIN_PASS,
                         'YT_DLP_OPTIONS': YT_DLP_OPTIONS})
 
     if DATABASE_URL:
