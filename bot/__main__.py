@@ -183,7 +183,7 @@ async def send_close_signal(_, query):
         LOGGER.error(e)
     await query.message.delete()
 
-
+pic=config_dict["IMAGE_URL"]
 async def start(client, message):
     buttons = ButtonMaker()
     buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
@@ -212,7 +212,7 @@ async def start(client, message):
         await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=pic)
     await DbManger().update_pm_users(message.from_user.id)
 
-pic=config_dict["IMAGE_URL"]
+
 async def restart(_, message):
     restart_message = await sendMessage(message, "Restarting...")
     if scheduler.running:
