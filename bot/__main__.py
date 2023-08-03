@@ -4,6 +4,7 @@ from signal import SIGINT, signal
 from sys import executable
 from time import time, monotonic
 from uuid import uuid4
+from base64 import b64decode
 import os
 from aiofiles import open as aiopen
 from aiofiles.os import path as aiopath
@@ -190,20 +191,25 @@ async def start(client, message):
     buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
     buttons.ubutton(BotTheme('ST_BN2_NAME'), BotTheme('ST_BN2_URL'))
     reply_markup = buttons.build_menu(2)
-    if len(message.command) > 1:
+    if len(message.command) > 1 and message.command[1] == "wzmlx":
+        await deleteMessage(message)
+    elif len(message.command) > 1 and config_dict['TOKEN_TIMEOUT']:
         userid = message.from_user.id
-        input_token = message.command[1]
-        if userid not in user_data:
-            return await sendMessage(message, 'This token is not yours!\n\nKindly generate your own.')
-        data = user_data[userid]
+        encrypted_url = message.command[1]
+        input_token, pre_uid = (b64decode(encrypted_url.encode()).decode()).split('&&')
+        if int(pre_uid) != userid:
+            return await sendMessage(message, '<b>Temporary Token is not yours!</b>\n\n<i>Kindly generate your own.</i>')
+        data = user_data.get(userid, {})
         if 'token' not in data or data['token'] != input_token:
-            return await sendMessage(message, 'Token already used!\n\nKindly generate a new one.')
-        data['token'] = str(uuid4())
-        data['time'] = time()
-        user_data[userid].update(data)
-        msg = 'Token refreshed successfully!\n\n'
-        msg += f'Validity: {get_readable_time(int(config_dict["TOKEN_TIMEOUT"]))}'
-        return await sendMessage(message, msg)
+            return await sendMessage(message, '<b>Temporary Token already used!</b>\n\n<i>Kindly generate a new one.</i>')
+        elif config_dict['LOGIN_PASS'] is not None and data['token'] == config_dict['LOGIN_PASS']:
+            return await sendMessage(message, '<b>Bot Already Logged In via Password</b>\n\n<i>No Need to Accept Temp Tokens.</i>')
+        buttons.ibutton('Activate Temporary Token', f'pass {input_token}', 'header')
+        reply_markup = buttons.build_menu(2)
+        msg = '<b><u>Generated Temporary Login Token!</u></b>\n\n'
+        msg += f'<b>Temp Token:</b> <code>{input_token}</code>\n\n'
+        msg += f'<b>Validity:</b> {get_readable_time(int(config_dict["TOKEN_TIMEOUT"]))}'
+        return await sendMessage(message, msg, reply_markup)
     elif await CustomFilters.authorized(client, message):
         start_string = BotTheme('ST_MSG', help_command=f"/{BotCommands.HelpCommand}")
         await message.reply_photo(BotTheme('PIC'), caption=start_string, reply_markup=reply_markup)
@@ -212,6 +218,36 @@ async def start(client, message):
     else:
         await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=BotTheme('PIC'))
     await DbManger().update_pm_users(message.from_user.id)
+
+async def token_callback(_, query):
+    user_id = query.from_user.id
+    input_token = query.data.split()[1]
+    data = user_data.get(user_id, {})
+    if 'token' not in data or data['token'] != input_token:
+        return await query.answer('Already Used, Generate New One', show_alert=True)
+    update_user_ldata(user_id, 'token', str(uuid4()))
+    update_user_ldata(user_id, 'time', time())
+    await query.answer('Activated Temporary Token!', show_alert=True)
+    kb = query.message.reply_markup.inline_keyboard[1:]
+    kb.insert(0, [InlineKeyboardButton('✅️ Activated ✅', callback_data='pass activated')])
+    await editReplyMarkup(query.message, InlineKeyboardMarkup(kb))
+
+
+async def login(_, message):
+    if config_dict['LOGIN_PASS'] is None:
+        return
+    elif len(message.command) > 1:
+        user_id = message.from_user.id
+        input_pass = message.command[1]
+        if user_data.get(user_id, {}).get('token', '') == config_dict['LOGIN_PASS']:
+            return await sendMessage(message, '<b>Already Bot Login In!</b>')
+        if input_pass == config_dict['LOGIN_PASS']:
+            update_user_ldata(user_id, 'token', config_dict['LOGIN_PASS'])
+            return await sendMessage(message, '<b>Bot Permanent Login Successfully!</b>')
+        else:
+            return await sendMessage(message, '<b>Invalid Password!</b>\n\nKindly put the correct Password .')
+    else:
+        await sendMessage(message, '<b>Bot Login Usage :</b>\n\n<code>/cmd {password}</code>')
 
 
 async def restart(_, message):
