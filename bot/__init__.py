@@ -411,9 +411,9 @@ BOT_THEME = environ.get('BOT_THEME', '')
 if len(BOT_THEME) == 0:
     BOT_THEME = 'minimal'
 
-IMAGE_URL = environ.get('IMAGE_URL', '')
-if len(IMAGE_URL) == 0:
-    IMAGE_URL = 'https://graph.org/file/9fb513487284cd4b6952c.jpg'
+LOGIN_PASS = environ.get('LOGIN_PASS', '')
+if len(LOGIN_PASS) == 0:
+    LOGIN_PASS = None
 
 
 config_dict = {
@@ -492,7 +492,8 @@ config_dict = {
     "TOKEN_TIMEOUT": TOKEN_TIMEOUT,
     "MIRROR_FILENAME_REMNAME": MIRROR_FILENAME_REMNAME,
     "BOT_THEME": BOT_THEME,
-    "IMAGE_URL": IMAGE_URL
+    "IMAGE_URL": IMAGE_URL,
+    "LOGIN_PASS" : LOGIN_PASS
 }
 
 config_dict = OrderedDict(sorted(config_dict.items()))
