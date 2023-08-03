@@ -141,15 +141,16 @@ def get_readable_message():
             tag = reply_to.from_user.mention
 
         elapsed = time() - download.extra_details['startTime']
+       
 
-        msg += f"\n<b>File Name</b> » <i>{escape(f'{download.name()}')}</i>\n\n" if elapsed <= config_dict['AUTO_DELETE_MESSAGE_DURATION'] else ""
-        msg += f"• <b>{download.status()}</b>"
+        msg += f"\n╭<b>File Name</b> » <i>{escape(f'{download.name()}')}</i>\n\n" if elapsed <= config_dict['AUTO_DELETE_MESSAGE_DURATION'] else ""
+        msg += f"\n├<b>{download.status()}</b>"
 
         if download.status() not in [MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_PAUSED,
                                      MirrorStatus.STATUS_QUEUEDL, MirrorStatus.STATUS_QUEUEUP]:
-
+            msg += f"\n__________<a herf=https://t.me/TomenMain>Tomen</a>_____________\n\n"
             
-            msg += f"\n╭ {get_progress_bar_string(download.progress())} » {download.progress()}"
+            msg += f"\n├ {get_progress_bar_string(download.progress())} » {download.progress()}"
             msg += f"\n├ {download.speed()}"
             msg += f"\n├ <code>Done     </code>» {download.processed_bytes()} of {download.size()}"
             msg += f"\n├ <code>ETA      </code>» {download.eta()}"
@@ -223,13 +224,13 @@ def get_readable_message():
         buttons.ibutton("⫸", "status nex")
         button = buttons.build_menu(3)
 
-    msg += "____________________________"
+    msg += "__________<a herf=https://t.me/TomenMain>Tomen</a>_____________"
     msg += f"\n╭<b>DL</b>: <code>{get_readable_file_size(dl_speed)}/s</code>"
     msg += f"\n╰<b>UL</b>: <code>{get_readable_file_size(up_speed)}/s</code>"
     remaining_time = 86400 - (time() - botStartTime)
-    res_time = '☠︎ ANYTIME ☠︎' if remaining_time <= 0 else get_readable_time(remaining_time)
+    res_time = '☠︎ ANYTIME ☠︎╮' if remaining_time <= 0 else get_readable_time(remaining_time)
     if remaining_time <= 3600:
-        msg += f"\n<b>Bot Restarts In:</b> <code>{res_time}</code>"
+        msg += f"\n<b>Bot Restarts In:</b> <code>{res_time}</code>╯"
     return msg, button
 
 
