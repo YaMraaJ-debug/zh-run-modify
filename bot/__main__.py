@@ -212,9 +212,9 @@ async def start(client, message):
         return await sendMessage(message, msg, reply_markup)
     elif await CustomFilters.authorized(client, message):
         start_string = BotTheme('ST_MSG', help_command=f"/{BotCommands.HelpCommand}")
-        await message.reply_photo(BotTheme('PIC'), caption=start_string, reply_markup=reply_markup)
+        await message.reply_photo(BotTheme('PIC'), caption=start_string, reply_markup)
     elif config_dict['DM_MODE']:
-        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup=reply_markup, photo=BotTheme('PIC'))
+        await sendMessage(message, BotTheme('ST_BOTPM'), reply_markup, photo=BotTheme('PIC'))
     else:
         await sendMessage(message, BotTheme('ST_UNAUTH'), reply_markup, photo=BotTheme('PIC'))
     await DbManger().update_pm_users(message.from_user.id)
