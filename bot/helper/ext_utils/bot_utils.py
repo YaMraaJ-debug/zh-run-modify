@@ -140,7 +140,7 @@ def get_readable_message():
             tag = reply_to.from_user.mention
 
         elapsed = time() - download.extra_details['startTime']
-        msg += f"<b>___________<a href=https://t.me/TomenMain</a>Tomen</a>_____________</b>\n\n"
+        msg += f"<b>____________________________</b>\n\n"
         msg += f"\n <b>File Name</b> » <i>{escape(f'{download.name()}')}</i>\n" if elapsed <= config_dict['AUTO_DELETE_MESSAGE_DURATION'] else ""
         msg += f"• <b>{download.status()}</b>"
 
@@ -222,7 +222,7 @@ def get_readable_message():
         buttons.ibutton("⫸", "status nex")
         button = buttons.build_menu(3)
 
-    msg += f"<b>___________<a href=https://t.me/TomenMain</a>Tomen</a>_____________</b>"
+    msg += f"<b>____________________________</b>"
     msg += f"\n╭<b>DL</b>: <code>{get_readable_file_size(dl_speed)}/s</code>"
     msg += f"\n╰<b>UL</b>: <code>{get_readable_file_size(up_speed)}/s</code>"
     remaining_time = 86400 - (time() - botStartTime)
