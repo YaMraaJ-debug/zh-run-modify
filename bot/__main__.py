@@ -39,6 +39,11 @@ from .modules import (anonymous, authorize, bot_settings, cancel_mirror,
 
 
 async def stats(_, message, edit_mode=False):
+    if await aiopath.exists('.git'):
+        last_commit = await cmd_exec("git log -1 --date=short --pretty=format:'%cd <b>From</b> %cr'", True)
+        last_commit = last_commit[0]
+    else:
+        last_commit = 'No UPSTREAM_REPO'
     buttons = ButtonMaker()
     sysTime     = get_readable_time(time() - boot_time())
     botTime     = get_readable_time(time() - botStartTime)
@@ -67,6 +72,7 @@ async def stats(_, message, edit_mode=False):
                 f'●<code>Uploaded        : </code> {sent}\n' \
                 f'●<code>Downloaded      : </code> {recv}\n' \
                 f'●<code>Total Bandwidth : </code> {tb}'
+                f'●<code>Latest Commit : </code> {last_commit}'
 
   
     sys_stats = f'⌬<b><i><u>System Statistics</u></i></b>\n\n'\
@@ -188,8 +194,8 @@ async def send_close_signal(_, query):
 
 async def start(client, message):
     buttons = ButtonMaker()
-    buttons.ubutton(BotTheme('ST_BN1_NAME'), BotTheme('ST_BN1_URL'))
-    buttons.ubutton(BotTheme('ST_BN2_NAME'), BotTheme('ST_BN2_URL'))
+    buttons.ubutton("Repo", "https://github.com/BalaPriyan/zh-run")
+    buttons.ubutton("Owner", "https://t.me/KingOfFondness")
     reply_markup = buttons.build_menu(2)
     if len(message.command) > 1 and message.command[1] == "wzmlx":
         await deleteMessage(message)
@@ -267,17 +273,13 @@ async def restart(_, message):
 
 @new_thread
 async def ping(_, message):
-    start_time = monotonic()
+    start_time = int(round(time() * 1000))
     reply = await sendMessage(message, "Starting Ping")
-    end_time = monotonic()
-    ping_time = int((end_time - start_time) * 1000)
-    await editMessage(reply, f'{ping_time} ms')
+    end_time = int(round(time() * 1000))
+    await editMessage(reply, f'{end_time - start_time} ms')
 
 async def log(_, message):
-    buttons = ButtonMaker()
-    buttons.ibutton('📑 Log Display', f'wzmlx {message.from_user.id} logdisplay')
-    buttons.ibutton('📨 Web Paste', f'wzmlx {message.from_user.id} webpaste')
-    await sendFile(message, 'Z_Logs.txt', buttons=buttons.build_menu(1))
+    await sendFile(message, 'Z_Logs.txt')
 
 help_string = f'''
 <b>NOTE: Click on any CMD to see more detalis.</b>
@@ -362,8 +364,7 @@ async def restart_notification():
     async def send_incompelete_task_message(cid, msg):
         try:
             if msg.startswith('Restarted Successfully!'):
-                await bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text='Restarted Successfully!')
-                await bot.send_message(chat_id, msg, disable_web_page_preview=True, reply_to_message_id=msg_id)
+                await bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text=msg)
                 await aioremove(".restartmsg")
             else:
                 await bot.send_message(chat_id=cid, text=msg, disable_web_page_preview=True,
