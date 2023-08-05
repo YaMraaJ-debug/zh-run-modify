@@ -122,7 +122,7 @@ def get_progress_bar_string(pct):
 
 
 def get_readable_message():
-    msg = ""
+    msg = "✥═══ @𝒀𝒂𝑴𝒓𝒂𝒂𝑱_𝒙𝑫 ═══✥"
     button = None
     STATUS_LIMIT = config_dict['STATUS_LIMIT']
     tasks = len(download_dict)
